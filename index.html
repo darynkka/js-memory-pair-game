@@ -23,8 +23,7 @@
                 <span id="ampm"></span>
             </div>
         </div>
-        <div class="game-field">
-
+        <div class="game-field" id="gameField">     
         </div>
         <div class="btn-wrapper">
         <button class="new-game-btn" id="newGameBtn">New game</button>
@@ -34,18 +33,18 @@
     <aside>
         <p class="settings-title">Game settings</p>
         <p class="field-size">Field size:</p>
-        <select name="field-size" id="field-size">
+        <select name="field-size" id="fieldSize">
             <option value="4-4">4x4</option>
             <option value="6-6">6x6</option>
         </select>
         <p class="game-level">Level difficulty:</p>
-        <select name="game-level" id="game-level" title="easy - 3 min, normal - 2 min, hard - 1 min of countdown">
+        <select name="game-level" id="gameLevel" title="easy - 3 min, normal - 2 min, hard - 1 min of countdown">
             <option value="easy">Easy</option>
             <option value="normal">Normal</option>
             <option value="hard">Hard</option>
         </select>
         <p class="players-number">Number of players:</p>
-        <select name="players-number" id="players-number">
+        <select name="players-number" id="playersNumber">
             <option value="easy">1</option>
             <option value="normal">2</option>
         </select>
@@ -53,7 +52,7 @@
         <input type="text">
         <span class="add-tip">*Required if choose 2 players</span>
         <p class="players-number">Number of rounds:</p>
-        <select name="rounds-number" id="rounds-number">
+        <select name="rounds-number" id="roundsNumber">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

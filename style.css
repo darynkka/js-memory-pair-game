@@ -141,3 +141,11 @@ input{
   background-position: center;
   transform: rotate(0deg);
 }
+.field-6x6 .card {
+  width: calc(17% - 20px);
+}
+
+.field-6x6 .game-field {
+  width: 600px;
+  height: 600px;
+}

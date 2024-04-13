@@ -1,0 +1,111 @@
+body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+}
+.wrapper {
+  background-color: rgba(105, 114, 150, 0.4);
+  width: 500px;
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0px 0px 6px black;
+}
+.game-field {
+  width: 400px;
+  height: 400px;
+  background-color: rgba(61, 75, 138, 0.7);
+  box-shadow: 0px 0px 2px black;
+}
+.clock-container {
+  margin-bottom: 20px;
+}
+.clock {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#seconds {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+aside {
+  width: 200px;
+  height: 550px;
+  background-color: rgba(105, 114, 150, 0.4);
+  box-shadow: 0px 0px 6px black;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+aside p {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 8px;
+}
+.settings-title { 
+  margin-top: 40px;
+}
+.field-size,
+.game-level,
+.players-number,
+.rounds-number,
+.second-player-name {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+select {
+  width: 110px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 16px;
+}
+.new-game-btn, .start-game-btn {
+  padding: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+  box-shadow: 0px 0px 3px black;
+}
+.start-game-btn {
+    margin-top: 30px;
+}
+.new-game-btn {
+    margin-right: 50px;
+}
+input{
+    width: 100px;
+}
+.add-tip {
+    font-size: 10px;
+    color: red;
+    text-align: center;
+    margin-top: 0;
+}
+.btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+.current-score {
+    font-size: 17px;
+}
+.current-score span {
+    margin-left: 5px;
+}

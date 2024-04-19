@@ -22,6 +22,8 @@
         <div class="btn-wrapper">
         <button class="new-game-btn" id="newGameBtn">New game</button>
         <p class="current-score">Guessed: <span id="guessedPairs">0</span> pairs</p>
+        <p id="player1Score" class="player1-score"></p> 
+        <p id="player2Score" class="player2-score"></p>
         </div>
     </div>
     <aside>
@@ -42,14 +44,10 @@
             <option value="easy">1</option>
             <option value="normal">2</option>
         </select>
-        <p class="second-player-name">Name of 2nd player:</p>
-        <input type="text">
-        <span class="add-tip">*Required if choose 2 players</span>
         <p class="players-number">Number of rounds:</p>
         <select name="rounds-number" id="roundsNumber">
             <option value="1">1</option>
             <option value="2">2</option>
-            <option value="3">3</option>
         </select>
         <button class="start-game-btn" id="startGameBtn">Start game</button>
     </aside>

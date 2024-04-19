@@ -198,6 +198,7 @@ input {
 
 .prev {
   left: 7px;
+  transform: rotate(180deg);
 }
 
 .next {
@@ -303,4 +304,64 @@ input {
     width: 200px;
     height: 110px;
   }
+}
+/* kanban */
+
+.kanban-wrapper {
+  background-color: #f0f0f0;
+  width: 900px;
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.to-do--board,
+.in-progress--board,
+.done-board {
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 280px;
+  background-color: rgba(184, 181, 181, 0.4);
+  height: 350px;
+  box-shadow: 1px 1px 7px gray;
+}
+.to-do--title,
+.in-progress--title,
+.done-title {
+  margin: 0;
+  width: 280px;
+  height: 40px;
+  color: azure;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  line-height: 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.to-do--title {
+  background-color: rgb(98, 98, 218);
+}
+
+.in-progress--title {
+  background-color: rgb(233, 86, 32);
+}
+
+.done-title {
+  background-color: rgb(34, 194, 34);
+}
+.board-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  height: 50px;
+  border-radius: 5px;
+  margin: 5px;
+  margin-bottom: 8px;
+  padding: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 17px;
+  cursor: pointer;
 }

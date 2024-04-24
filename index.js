@@ -1,19 +1,20 @@
-"use strict";
+'use strict'
 
 let cardsList = [];
 const cardBackSide = "back-img.jpg";
-let flippedCards = []; // відкриті картки
-let guessedPairsCount = 0; // каунтер для відгаданих пар
-let timerInterval; // для сетінтервал
-let gameStarted = false; // флажок початок/кінець гри
-let cardsNumb = 16; // по замовчуванню
-let totalRounds; // к-сть раундів
-let currentRound = 1; // точний раунд
-let currentPlayer = 1; // поточний гравець
+let flippedCards = [];
+let guessedPairsCount = 0;
+let timerInterval;
+let gameStarted = false;
+let cardsNumb = 16;
+let totalRounds;
+let currentRound = 1;
+let currentPlayer = 1;
 let player1Name = "";
 let player2Name = "";
 let player1PairsCount = 0;
 let player2PairsCount = 0;
+let startTime;
 
 const gameField = document.getElementById("gameField");
 
@@ -32,25 +33,45 @@ function startNewGame() {
   gameStarted = true;
   setDefaultGame();
   cardsNumb = 16;
-  startTimer(180); // 3 хвилини за замовчуванням
+  startTime = new Date();
+  startTimer(180, startTime);
+  updateScores();
 }
 
 function startGameWithSelectedOptions() {
   gameStarted = true;
-  setDefaultGame();
 
   const fieldSize = document.getElementById("fieldSize").value;
   const level = document.getElementById("gameLevel").value;
-  // const playerNumb = document.getElementById("playersNumber").value;
+  const playerMode = document.getElementById("playersNumber").value;
 
-  const roundsNumber = document.getElementById("roundsNumber").value;
-  totalRounds = parseInt(roundsNumber);
+  if (playerMode === "2") {
+    player1Name = prompt("Enter name for the first player", "player 1");
+    player2Name = prompt("Enter name for the second player", "player 2");
+    document.getElementById(
+      "player1Score"
+    ).textContent = `${player1Name}: ${player1PairsCount}`;
+    document.getElementById(
+      "player2Score"
+    ).textContent = `${player2Name}: ${player2PairsCount}`;
+    document.getElementById("player1Score").style.display = "block";
+    document.getElementById("player2Score").style.display = "block";
+    document.querySelector(".current-score").style.display = "none";
+    multiplePlayerMode();
+    updateScores();
+  } else {
+    setDefaultGame();
+    document.querySelector(".current-score").style.display = "block";
+    document.getElementById("player1Score").style.display = "none";
+    document.getElementById("player2Score").style.display = "none";
+    updateScores();
+  }
 
   cardsNumb = getCardsNumberByFieldSize(fieldSize);
   const countdownTime = getTimeBasedOnDifficulty(level);
-
+  startTime = new Date();
   generateCards(cardsNumb);
-  startTimer(countdownTime);
+  startTimer(countdownTime, startTime);
 }
 
 function setDefaultGame() {
@@ -89,25 +110,29 @@ function getCardsNumberByFieldSize(fieldSize) {
 
   if (cardsNumber === 36) {
     gameField.classList.add("field-6x6");
+  } else {
+    gameField.classList.remove("field-6x6");
   }
 
-  return cardsNumber || 16; // Повертає 16, якщо fieldSize не знайдено в мапі
+  return cardsNumber || 16;
 }
 
 function getTimeBasedOnDifficulty(level) {
   const levelTimeMap = new Map([
-    ["easy", 180], // 3 хвилини
-    ["normal", 120], // 2 хвилини
-    ["hard", 60], // 1 хвилина
+    ["easy", 180],
+    ["normal", 120],
+    ["hard", 60],
   ]);
 
-  return levelTimeMap.get(level) || 180; // Повертає 180, якщо level не знайдено в мапі
+  return levelTimeMap.get(level) || 180;
 }
 
 function resetGame() {
   gameStarted = false;
   flippedCards = [];
   guessedPairsCount = 0;
+  player1PairsCount = 0;
+  player2PairsCount = 0;
   document.getElementById("guessedPairs").textContent = guessedPairsCount;
   setDefaultGame();
   generateCards(getCardsNumberByFieldSize("4-4"));
@@ -173,6 +198,12 @@ function flipCard(card) {
     card.querySelector(".back").style.transform = "rotateY(0deg)";
     flippedCards = flippedCards.filter((flippedCard) => flippedCard !== card);
   }
+
+  if (document.getElementById("playersNumber").value === "2") {
+    const playerColor = currentPlayer === 1 ? "orange" : "purple";
+    card.querySelector(".front").style.boxShadow = `0 0 20px ${playerColor}`;
+  }
+  updateScores();
 }
 
 function checkMatch() {
@@ -188,11 +219,12 @@ function checkMatch() {
       flippedCards[1].classList.add("matched");
       flippedCards[1].style.pointerEvents = "none";
       flippedCards = [];
-      guessedPairsCount++;
-      document.getElementById("guessedPairs").textContent = guessedPairsCount;
-      if (guessedPairsCount === cardsNumb / 2) {
+      updateScores();
+      if (
+        guessedPairsCount === cardsNumb / 2 &&
+        document.getElementById("playersNumber").value === "1"
+      ) {
         alert("Congratulations, you won!");
-        gameField.classList.remove("field-6x6");
         clearInterval(timerInterval);
         resetGame();
       }
@@ -204,29 +236,141 @@ function checkMatch() {
           card.querySelector(".back").style.transform = "rotateY(0deg)";
         });
         flippedCards = [];
+
+        if (document.getElementById("playersNumber").value === "2") {
+          currentPlayer = currentPlayer === 1 ? 2 : 1;
+        }
       }, 500);
     }
   }
 }
 
-function startTimer(time) {
+function startTimer(time, startTime) {
   let seconds = time;
   const timerDisplay = document.getElementById("timer");
   timerDisplay.textContent = formatTime(time);
 
   timerInterval = setInterval(() => {
-    timerDisplay.textContent = formatTime(seconds);
-    if (seconds <= 0) {
+    const currentTime = new Date();
+    const elapsedTime = currentTime - startTime;
+    const remainingTime = time - Math.floor(elapsedTime / 1000);
+    timerDisplay.textContent = formatTime(remainingTime);
+
+    if (remainingTime <= 0) {
       clearInterval(timerInterval);
-      alert("Oops..You lose!");
+      const endTime = new Date();
+      const elapsedTime = calculateElapsedTime(startTime, endTime);
+      alert(`Oops..You lose!\nElapsed Time: ${elapsedTime}`);
       resetGame();
     }
-    seconds--;
   }, 1000);
+}
+
+function calculateElapsedTime(startTime, endTime) {
+  const elapsedTimeInSeconds = (endTime - startTime) / 1000;
+  const minutes = Math.floor(elapsedTimeInSeconds / 60);
+  const seconds = Math.floor(elapsedTimeInSeconds % 60);
+  return `${minutes} minutes ${seconds} seconds`;
 }
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainderSeconds = seconds % 60;
   return `${minutes}:${remainderSeconds < 10 ? "0" : ""}${remainderSeconds}`;
+}
+
+function multiplePlayerMode() {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card) => {
+    const boxShadow =
+      currentPlayer === 1 ? "0 0 10px orange" : "0 0 10px purple";
+    card.style.boxShadow = boxShadow;
+
+    card.addEventListener("click", () => {
+      if (gameStarted && flippedCards.length < 2) {
+        flipCard(card);
+        updateScores();
+        if (flippedCards.length === 2) {
+          setTimeout(() => {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+            cards.forEach((card) => {
+              const boxShadow =
+                currentPlayer === 1 ? "0 0 10px orange" : "0 0 10px purple";
+              card.style.boxShadow = boxShadow;
+            });
+          }, 500); 
+        }
+      }
+    });
+  });
+}
+
+function updateScores() {
+  if (document.getElementById("playersNumber").value === "2") {
+    if (flippedCards.length === 2) {
+      if (
+        flippedCards[0].querySelector(".front").style.backgroundImage ===
+        flippedCards[1].querySelector(".front").style.backgroundImage
+      ) {
+        if (currentPlayer === 1) {
+          player1PairsCount++;
+          document.getElementById(
+            "player1Score"
+          ).textContent = `${player1Name}: ${player1PairsCount}`;
+        } else {
+          player2PairsCount++;
+          document.getElementById(
+            "player2Score"
+          ).textContent = `${player2Name}: ${player2PairsCount}`;
+        }
+      }
+    }
+
+    const totalPairs = cardsNumb / 2;
+    const targetScore = totalPairs / 2;
+
+    if (player1PairsCount + player2PairsCount === totalPairs) {
+      if (player1PairsCount > player2PairsCount) {
+        const endTime = new Date();
+        const elapsedTime = calculateElapsedTime(startTime, endTime);
+        alert(`${player1Name} is the winner!\nElapsed Time: ${elapsedTime}`);
+        resetGame();
+        document.getElementById("player1Score").style.display = "none";
+        document.getElementById("player2Score").style.display = "none";
+        document.querySelector(".current-score").style.display = "block";
+      } else if (player1PairsCount < player2PairsCount) {
+        const endTime = new Date();
+        const elapsedTime = calculateElapsedTime(startTime, endTime);
+        alert(`${player2Name} is the winner!\nElapsed Time: ${elapsedTime}`);
+        resetGame();
+        document.getElementById("player1Score").style.display = "none";
+        document.getElementById("player2Score").style.display = "none";
+        document.querySelector(".current-score").style.display = "block";
+      } else {
+        alert("It's a tie!");
+        resetGame();
+        document.getElementById("player1Score").style.display = "none";
+        document.getElementById("player2Score").style.display = "none";
+        document.querySelector(".current-score").style.display = "block";
+      }
+    }
+  } else {
+    if (flippedCards.length === 2) {
+      if (
+        flippedCards[0].querySelector(".front").style.backgroundImage ===
+        flippedCards[1].querySelector(".front").style.backgroundImage
+      ) {
+        guessedPairsCount++;
+        document.getElementById("guessedPairs").textContent = guessedPairsCount;
+      }
+    }
+
+    if (guessedPairsCount === cardsNumb / 2) {
+      const endTime = new Date();
+      const elapsedTime = calculateElapsedTime(startTime, endTime);
+      alert(`Congratulations, you won!\nElapsed Time: ${elapsedTime}`);
+      clearInterval(timerInterval);
+      resetGame();
+    }
+  }
 }

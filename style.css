@@ -365,3 +365,10 @@ input {
   font-size: 17px;
   cursor: pointer;
 }
+.player1-card .front {
+  box-shadow: 2px 2px 2px 2px orange;
+}
+
+.player2-card .front {
+  box-shadow: 2px 2px 2px 2px purple;
+}

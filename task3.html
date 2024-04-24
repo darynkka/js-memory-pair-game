@@ -8,47 +8,144 @@
   </head>
   <body>
     <div class="kanban-wrapper">
-      <div class="to-do--board" ondragover="allowDrop(event)" ondrop="drop(event)">
+      <div
+        class="to-do--board"
+        ondragover="allowDrop(event)"
+        ondrop="drop(event)"
+      >
         <h2 class="to-do--title">To do</h2>
-        <div class="board-item" id="1" draggable="true" ondragstart="drag(event)">Item1</div>
-        <div class="board-item" id="2" draggable="true" ondragstart="drag(event)">Item2</div>
-        <div class="board-item" id="3" draggable="true" ondragstart="drag(event)">Item3</div>
-        <div class="board-item" id="4" draggable="true" ondragstart="drag(event)">Item4</div>
-        <div class="board-item" id="5" draggable="true" ondragstart="drag(event)">Item5</div>
-        <div class="board-item" id="6" draggable="true" ondragstart="drag(event)">Item6</div>
-    </div>
-    <div class="in-progress--board" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <div
+          class="board-item"
+          id="1"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item1
+        </div>
+        <div
+          class="board-item"
+          id="2"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item2
+        </div>
+        <div
+          class="board-item"
+          id="3"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item3
+        </div>
+        <div
+          class="board-item"
+          id="4"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item4
+        </div>
+        <div
+          class="board-item"
+          id="5"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item5
+        </div>
+        <div
+          class="board-item"
+          id="6"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item6
+        </div>
+      </div>
+      <div
+        class="in-progress--board"
+        ondragover="allowDrop(event)"
+        ondrop="drop(event)"
+      >
         <h2 class="in-progress--title">In progress</h2>
-        <div class="board-item" id="7" draggable="true" ondragstart="drag(event)">Item7</div>
-        <div class="board-item" id="8" draggable="true" ondragstart="drag(event)">Item8</div>
-        <div class="board-item" id="9" draggable="true" ondragstart="drag(event)">Item9</div>
-        <div class="board-item" id="10" draggable="true" ondragstart="drag(event)">Item10</div>
-        <div class="board-item" id="11" draggable="true" ondragstart="drag(event)">Item11</div>
-        <div class="board-item" id="12" draggable="true" ondragstart="drag(event)">Item12</div>
-    </div>
+        <div
+          class="board-item"
+          id="7"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item7
+        </div>
+        <div
+          class="board-item"
+          id="8"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item8
+        </div>
+        <div
+          class="board-item"
+          id="9"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item9
+        </div>
+        <div
+          class="board-item"
+          id="10"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item10
+        </div>
+        <div
+          class="board-item"
+          id="11"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item11
+        </div>
+        <div
+          class="board-item"
+          id="12"
+          draggable="true"
+          ondragstart="drag(event)"
+        >
+          Item12
+        </div>
+      </div>
 
-      <div class="done-board" ondragover="allowDrop(event)" ondrop="drop(event)">
+      <div
+        class="done-board"
+        ondragover="allowDrop(event)"
+        ondrop="drop(event)"
+      >
         <h2 class="done-title">Done</h2>
         <div class="board-item" id="13" draggable="true">Item13</div>
         <div class="board-item" id="14" draggable="true">Item14</div>
         <div class="board-item" id="15" draggable="true">Item15</div>
-        
-    </div>
+      </div>
     </div>
   </body>
   <script>
     function allowDrop(ev) {
-            ev.preventDefault();
-        }
+      ev.preventDefault();
+    }
 
-        function drag(ev) {
-            ev.dataTransfer.setData("text/plain", ev.target.id);
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text/plain");
-            ev.target.appendChild(document.getElementById(data));
-        }
+    function drag(ev) {
+      ev.dataTransfer.setData("text/plain", ev.target.id);
+    }
+    function drop(ev) {
+      ev.preventDefault();
+      target = ev.target;
+      var data = ev.dataTransfer.getData("text/plain");
+      if (!target.classList.contains("board-item")) {
+        target.appendChild(document.getElementById(data));
+      }
+    }
   </script>
 </html>

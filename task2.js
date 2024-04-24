@@ -8,6 +8,7 @@ const slideCount = carouselPhotos.querySelectorAll('li').length;
 const carouselWidth = slideWidth * slideCount; // загальна ширина каруселі
 let autoplayInterval;
 
+carouselPhotos.style.width = `${carouselWidth}px`;
 
 const config = { // параметри конфігурації
   duration: 500, 
@@ -16,9 +17,6 @@ const config = { // параметри конфігурації
   showDots: true, 
 };
 
-function setCarouselWidth() {
-  carouselPhotos.style.width = `${carouselWidth}px`;
-}
 
 // для переміщення каруселі
 function moveCarousel(newSlide) {
@@ -92,11 +90,13 @@ const carousel = document.querySelector('.carousel');
 carousel.addEventListener('mouseover', stopAutoplay);
 carousel.addEventListener('mouseleave', autoplay);
 
-setCarouselWidth();
 moveCarousel(currentSlide);
 
 if (config.showDots) {
   createDots();
+}
+if (config.autoplay) {
+  autoplay();
 }
 
 if (config.showArrows) {
@@ -107,6 +107,3 @@ if (config.showArrows) {
   carouselArrowNext.style.display = 'none';
 }
 
-if (config.autoplay) {
-  autoplay();
-}
